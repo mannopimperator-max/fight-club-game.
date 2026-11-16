@@ -12,6 +12,8 @@
 .locker-preview{display:grid;place-items:center;height:245px;background:radial-gradient(circle,#3c3040,#131827);border-radius:17px;margin-bottom:14px}.locker-preview svg{height:230px;width:185px}.custom-group{margin:13px 0}.custom-group h3{font-size:14px;margin:0 0 8px}.swatches{display:flex;flex-wrap:wrap;gap:9px}.choice{border:2px solid #4a5063;background:#22283b;color:#fff;border-radius:12px;min-width:48px;min-height:43px;padding:8px 12px;font-weight:700}.choice.selected{border-color:#ffce62;box-shadow:0 0 0 2px #ffce6230}.choice .dot{display:inline-block;width:21px;height:21px;border-radius:50%;vertical-align:middle;border:1px solid #fff7;margin-right:5px}.nav button{padding-left:4px;padding-right:4px;font-size:10px}.nav button i{font-size:21px}
 
 .shop-intro{background:linear-gradient(125deg,#342537,#1a2234);border:1px solid #57445c;border-radius:16px;padding:14px;margin:15px 0}.shop-heading{display:flex;justify-content:space-between;align-items:center;gap:8px}.shop-wallet{color:var(--gold);font-weight:900}.shop-tabs{display:flex;gap:8px;overflow-x:auto;padding:9px 0 13px;scrollbar-width:none}.shop-tabs::-webkit-scrollbar{display:none}.shop-tab{background:#272e43;color:#d6daec;border:1px solid #485069;border-radius:99px;padding:10px 13px;white-space:nowrap;font-size:13px;font-weight:800}.shop-tab.active{background:#e9b85f;color:#171523;border-color:#e9b85f}.shop-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.item-card{background:linear-gradient(155deg,#292f46,#191f2e);border:1px solid #444d65;border-radius:17px;padding:12px;min-width:0}.item-art{height:110px;display:grid;place-items:center;background:radial-gradient(circle at 50% 60%,#49445a,#222738 70%);border-radius:12px;margin-bottom:9px;overflow:hidden}.item-art svg{height:106px;width:95px}.item-title{font-size:13px;font-weight:900;line-height:1.3;min-height:34px}.item-info{font-size:11px;color:#b3bdd0;margin:4px 0 11px;min-height:28px}.item-btn{width:100%;padding:10px 6px;background:#efbe66;color:#1c1a20;border:0;border-radius:10px;font-size:12px;font-weight:900}.item-btn.owned{background:#37445c;color:#f4f4ff}.item-btn.equipped{background:#235845;color:#b0f7d4}.shop-subhead{margin:15px 0 10px;font-size:16px}.shop-note{font-size:12px;color:#bec4d2;line-height:1.5;margin-top:13px}.shop-empty{padding:15px;color:var(--muted)}
+
+.accessory-intro{margin-top:24px;border-top:1px solid #394259;padding-top:17px}.accessory-intro h3{margin:0 0 6px;font-size:20px}.accessory-tabs{display:flex;gap:8px;overflow-x:auto;padding:10px 0 13px;scrollbar-width:none}.accessory-tabs::-webkit-scrollbar{display:none}.accessory-tab{flex-shrink:0;background:#252b40;border:1px solid #49526a;border-radius:12px;padding:10px 12px;color:#e8e9f4;font-weight:750;font-size:12px}.accessory-tab.active{background:#ffcf70;color:#241c12;border-color:#ffcf70}.accessory-owned{font-size:12px;color:#a8e8c3}.item-art.accessory-art svg{max-height:108px}.accessory-summary{font-size:12px;color:#d3d7e7;background:#202a3e;padding:10px;border-radius:10px;margin-bottom:10px}.item-btn.clear{background:#34394f;color:#e9edf8;border:1px solid #58627d}.accessory-sep{margin:15px 0;border:0;border-top:1px solid #394259}
 </style>
 </head>
 <body>
@@ -21,12 +23,12 @@
 <div class="stats"><div class="stat"><strong id="powerstat">+1</strong><span>за удар</span></div><div class="stat"><strong id="passivestat">0</strong><span>монет/сек</span></div><div class="stat"><strong id="hitstat">0</strong><span>ударов</span></div></div><div class="energy-head"><strong>⚡ Энергия</strong><span id="energytext">100 / 100</span></div><div class="bar"><div class="fill" id="energyfill" style="width:100%"></div></div><div class="hint" style="margin-top:7px">Энергия сама восстанавливается: +1 в секунду.</div></section>
 <section class="section" id="screen-upgrades"><h2 class="section-title">💪 Прокачка</h2><p class="muted">Трать монеты и увеличивай доход.</p><div class="panel"><div class="upgrade"><div class="text"><b>🥊 Сила удара</b><small>+1 монета за каждое нажатие · уровень <span id="lvlpower">1</span></small></div><button class="buy" id="buypower">🪙 25</button></div><div class="upgrade"><div class="text"><b>🤖 Автотренировка</b><small>+1 монета в секунду · уровень <span id="lvlauto">0</span></small></div><button class="buy" id="buyauto">🪙 150</button></div><div class="upgrade"><div class="text"><b>⚡ Выносливость</b><small>+25 к максимуму энергии · уровень <span id="lvlstamina">0</span></small></div><button class="buy" id="buystamina">🪙 100</button></div></div></section>
 <section class="section" id="screen-fight"><h2 class="section-title">🏆 Арена</h2><p class="muted">Наноси удары боссу. Каждая победа приносит монеты.</p><div class="boss"><div class="big-avatar">🥷</div><h2 style="text-align:center;margin:5px">Тень ринга</h2><div class="hint" style="text-align:center">Босс № <span id="bossnum">1</span></div><div class="bossbar"><span id="bossfill" style="width:100%"></span></div><div class="hint" style="text-align:center"><span id="bosshp">30</span> HP</div><button class="primary" id="fightbtn">👊 Ударить босса (⚡ 3)</button><p class="muted" style="text-align:center">Сила удара зависит от прокачки. За победу: 🪙 <span id="reward">100</span></p></div></section>
-<section class="section" id="screen-locker"><h2 class="section-title">🎨 Раздевалка</h2><p class="muted">Меняй внешний вид бойца: лицо, бороду, волосы, цвета и экипировку. Покупки и внешний вид сохраняются на этом устройстве.</p><div class="panel"><div class="locker-preview" id="locker-preview"></div><div class="shop-intro"><div class="shop-heading"><b>🛍️ Магазин бойцов и формы</b><span class="shop-wallet">🪙 <span id="shop-coins">0</span></span></div><p class="muted" style="margin-bottom:0">Выбирай дисциплину, покупай бойцов и надевай характерную экипировку. Все покупки — за игровые монеты.</p></div><div id="shop-tabs" class="shop-tabs" aria-label="Виды единоборств"></div><h3 class="shop-subhead">🥋 Бойцы</h3><div class="shop-grid" id="fighter-shop"></div><h3 class="shop-subhead">👕 Форма и экипировка</h3><div class="shop-grid" id="gear-shop"></div><p class="shop-note">Это уже расширенная версия магазина. Позже можно отдельно добавить капы, защиту голени, обувь, пояса и редкие скины.</p><div class="custom-group"><h3>Форма лица</h3><div class="swatches" id="face-options"></div></div><div class="custom-group"><h3>Брови</h3><div class="swatches" id="eyebrows-options"></div></div><div class="custom-group"><h3>Борода</h3><div class="swatches" id="beard-options"></div></div><div class="custom-group"><h3>Причёска</h3><div class="swatches" id="hair-options"></div></div><div class="custom-group"><h3>Цвет волос и бороды</h3><div class="swatches" id="hairColor-options"></div></div><div class="custom-group"><h3>Цвет кожи</h3><div class="swatches" id="skin-options"></div></div><div class="custom-group"><h3>Цвет перчаток</h3><div class="swatches" id="gloves-options"></div></div><div class="custom-group"><h3>Цвет шорт</h3><div class="swatches" id="shorts-options"></div></div><div class="custom-group"><h3>Аксессуары</h3><button class="primary" id="headband-btn" type="button">Купить повязку — 🪙 200</button></div><p class="muted" style="margin-bottom:0">Доступно: 10 форм лица, 10 причёсок, 10 стилей бороды, 10 типов бровей и 10 цветов волос/бороды.</p></div></section><section class="section" id="screen-profile"><h2 class="section-title">👤 Профиль</h2><div class="panel"><div class="task"><span>Игрок</span><strong id="profile-name">Боец</strong></div><div class="task"><span>Лига</span><span class="badge" id="profile-league">Новичок</span></div><div class="task"><span>Всего заработано</span><strong id="total">0</strong></div><div class="task"><span>Побеждено боссов</span><strong id="bosswins">0</strong></div><div class="task"><span>Всего ударов</span><strong id="allhits">0</strong></div></div><div class="panel"><h2>🎁 Ежедневная награда</h2><p class="muted">Получай 250 монет раз в календарный день (по времени устройства).</p><button class="primary" id="dailybtn">Забрать 250 🪙</button></div><p class="muted">Демо-версия: прогресс хранится только в этом браузере/Telegram WebView. Пока нет общего рейтинга и серверной защиты от накрутки. Игровые монеты не имеют денежной стоимости.</p></section></div>
+<section class="section" id="screen-locker"><h2 class="section-title">🎨 Раздевалка</h2><p class="muted">Меняй внешний вид бойца: лицо, бороду, волосы, цвета и экипировку. Покупки и внешний вид сохраняются на этом устройстве.</p><div class="panel"><div class="locker-preview" id="locker-preview"></div><div class="shop-intro"><div class="shop-heading"><b>🛍️ Магазин бойцов и формы</b><span class="shop-wallet">🪙 <span id="shop-coins">0</span></span></div><p class="muted" style="margin-bottom:0">Выбирай дисциплину, покупай бойцов и надевай характерную экипировку. Все покупки — за игровые монеты.</p></div><div id="shop-tabs" class="shop-tabs" aria-label="Виды единоборств"></div><h3 class="shop-subhead">🥋 Бойцы</h3><div class="shop-grid" id="fighter-shop"></div><h3 class="shop-subhead">👕 Форма и экипировка</h3><div class="shop-grid" id="gear-shop"></div><div class="accessory-intro"><h3>🧤 Магазин аксессуаров</h3><p class="muted">Капы, бинты, шлемы, защита голени и коленей, обувь, пояса и украшения. Покупай за монеты и надевай на бойца.</p><div class="accessory-summary" id="accessory-summary">Экипировка: ничего не надето</div><div class="accessory-tabs" id="accessory-tabs" aria-label="Категории аксессуаров"></div><div class="shop-grid" id="accessory-shop"></div><p class="shop-note">Один аксессуар в каждом слоте. Купленные вещи остаются в коллекции, даже когда их снимаешь. Капа и некоторые мелкие элементы схематично видны на персонаже.</p></div><div class="custom-group"><h3>Форма лица</h3><div class="swatches" id="face-options"></div></div><div class="custom-group"><h3>Брови</h3><div class="swatches" id="eyebrows-options"></div></div><div class="custom-group"><h3>Борода</h3><div class="swatches" id="beard-options"></div></div><div class="custom-group"><h3>Причёска</h3><div class="swatches" id="hair-options"></div></div><div class="custom-group"><h3>Цвет волос и бороды</h3><div class="swatches" id="hairColor-options"></div></div><div class="custom-group"><h3>Цвет кожи</h3><div class="swatches" id="skin-options"></div></div><div class="custom-group"><h3>Цвет перчаток</h3><div class="swatches" id="gloves-options"></div></div><div class="custom-group"><h3>Цвет шорт</h3><div class="swatches" id="shorts-options"></div></div><div class="custom-group"><h3>Аксессуары</h3><button class="primary" id="headband-btn" type="button">Купить повязку — 🪙 200</button></div><p class="muted" style="margin-bottom:0">Доступно: 10 форм лица, 10 причёсок, 10 стилей бороды, 10 типов бровей и 10 цветов волос/бороды.</p></div></section><section class="section" id="screen-profile"><h2 class="section-title">👤 Профиль</h2><div class="panel"><div class="task"><span>Игрок</span><strong id="profile-name">Боец</strong></div><div class="task"><span>Лига</span><span class="badge" id="profile-league">Новичок</span></div><div class="task"><span>Всего заработано</span><strong id="total">0</strong></div><div class="task"><span>Побеждено боссов</span><strong id="bosswins">0</strong></div><div class="task"><span>Всего ударов</span><strong id="allhits">0</strong></div></div><div class="panel"><h2>🎁 Ежедневная награда</h2><p class="muted">Получай 250 монет раз в календарный день (по времени устройства).</p><button class="primary" id="dailybtn">Забрать 250 🪙</button></div><p class="muted">Демо-версия: прогресс хранится только в этом браузере/Telegram WebView. Пока нет общего рейтинга и серверной защиты от накрутки. Игровые монеты не имеют денежной стоимости.</p></section></div>
 <div class="nav" role="navigation"><button data-tab="train" class="active"><i>🥊</i>Тренировка</button><button data-tab="upgrades"><i>💪</i>Прокачка</button><button data-tab="fight"><i>🏆</i>Бои</button><button data-tab="locker"><i>🎨</i>Боец</button><button data-tab="profile"><i>👤</i>Профиль</button></div><div class="toast" id="toast" role="status"></div>
 <script>
 (()=>{'use strict';
 const tg=window.Telegram?.WebApp;try{tg?.ready();tg?.expand();tg?.setHeaderColor('#0b0e17');tg?.setBackgroundColor('#0b0e17')}catch(e){}
-const KEY='fightclub_demo_v1';const defaults={coins:0,total:0,hits:0,power:1,auto:0,stamina:0,energy:100,boss:1,bossHp:30,wins:0,lastDaily:'',lastTick:Date.now(),skin:'medium',gloves:'red',shorts:'navy',hair:'classic',hairColor:'black',face:'oval',eyebrows:'classic',beard:'clean',headbandOwned:false,headbandOn:false,ownedFighters:['starter'],activeFighter:'starter',ownedGear:[],activeGear:'',shopCategory:'muaythai'};let s={...defaults};try{const saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved&&typeof saved==='object')for(const k in defaults)if(Object.prototype.hasOwnProperty.call(saved,k)&&typeof saved[k]===typeof defaults[k])s[k]=saved[k]}catch(e){};
+const KEY='fightclub_demo_v1';const defaults={coins:0,total:0,hits:0,power:1,auto:0,stamina:0,energy:100,boss:1,bossHp:30,wins:0,lastDaily:'',lastTick:Date.now(),skin:'medium',gloves:'red',shorts:'navy',hair:'classic',hairColor:'black',face:'oval',eyebrows:'classic',beard:'clean',headbandOwned:false,headbandOn:false,ownedFighters:['starter'],activeFighter:'starter',ownedGear:[],activeGear:'',shopCategory:'muaythai',accessoryCategory:'mouthguard',ownedAccessories:[],equippedAccessories:{}};let s={...defaults};try{const saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved&&typeof saved==='object')for(const k in defaults)if(Object.prototype.hasOwnProperty.call(saved,k)&&typeof saved[k]===typeof defaults[k])s[k]=saved[k]}catch(e){};
 const $=id=>document.getElementById(id),fmt=x=>Math.floor(x).toLocaleString('ru-RU'),maxEnergy=()=>100+s.stamina*25,bossMax=()=>30+(s.boss-1)*25,powerCost=()=>25*s.power*s.power,autoCost=()=>150*(s.auto+1)**2,staminaCost=()=>100*(s.stamina+1)**2;
 const name=tg?.initDataUnsafe?.user?.first_name||'Боец';$('username').textContent=`Игрок: ${name}`;$('profile-name').textContent=name;
 function save(){try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}}
@@ -135,6 +137,118 @@ const gears=[
  {id:'kungfu_red',cat:'kungfu',name:'Кунг-фу — дракон',info:'Куртка на застёжках и брюки',price:420,color:'#922b38',accent:'#e2b556'},
  {id:'kungfu_black',cat:'kungfu',name:'Кунг-фу — мастер',info:'Чёрная форма и кант',price:670,color:'#1e2230',accent:'#e4dfcc'}
 ];
+// Accessories are cosmetic; no combat advantage is attached to equipment yet.
+const accessoryCategories={
+ mouthguard:{label:'Капы',icon:'🦷',slot:'mouth'},
+ wraps:{label:'Бинты',icon:'🩹',slot:'hands'},
+ headgear:{label:'Шлемы',icon:'⛑️',slot:'head'},
+ shin:{label:'Голени',icon:'🦵',slot:'shin'},
+ knees:{label:'Колени',icon:'🛡️',slot:'knees'},
+ shoes:{label:'Обувь',icon:'👟',slot:'feet'},
+ belts:{label:'Пояса',icon:'🥋',slot:'waist'},
+ jewelry:{label:'Украшения',icon:'🏅',slot:'chest'}
+};
+const accessories=[
+ {id:'mouth_white',cat:'mouthguard',name:'Капа Classic',desc:'Белая тренировочная',price:60,color:'#f0f4ff'},
+ {id:'mouth_red',cat:'mouthguard',name:'Капа Fire',desc:'Красная',price:100,color:'#e8414e'},
+ {id:'mouth_blue',cat:'mouthguard',name:'Капа Ocean',desc:'Синяя',price:120,color:'#67baff'},
+ {id:'mouth_gold',cat:'mouthguard',name:'Капа Champion',desc:'Золотая',price:350,color:'#ffcc58'},
+ {id:'wrap_white',cat:'wraps',name:'Белые бинты',desc:'Классические',price:75,color:'#f1eee7'},
+ {id:'wrap_black',cat:'wraps',name:'Чёрные бинты',desc:'Контрастные',price:110,color:'#303541'},
+ {id:'wrap_red',cat:'wraps',name:'Красные бинты',desc:'Боевой стиль',price:160,color:'#cc3748'},
+ {id:'wrap_gold',cat:'wraps',name:'Бинты Легенда',desc:'Золотистые',price:380,color:'#e6c068'},
+ {id:'head_red',cat:'headgear',name:'Шлем Спарринг',desc:'Красная защита головы',price:320,color:'#ba3445'},
+ {id:'head_blue',cat:'headgear',name:'Шлем Сапфир',desc:'Синяя защита головы',price:420,color:'#356db6'},
+ {id:'head_black',cat:'headgear',name:'Шлем Ночь',desc:'Чёрная защита головы',price:550,color:'#242c39'},
+ {id:'head_gold',cat:'headgear',name:'Шлем Чемпион',desc:'Золотистый',price:950,color:'#c99d43'},
+ {id:'shin_black',cat:'shin',name:'Щитки Стандарт',desc:'Чёрная защита голени',price:260,color:'#303743'},
+ {id:'shin_blue',cat:'shin',name:'Щитки Storm',desc:'Синие накладки',price:390,color:'#3f78bc'},
+ {id:'shin_red',cat:'shin',name:'Щитки Dragon',desc:'Красные накладки',price:480,color:'#bd3a47'},
+ {id:'knee_black',cat:'knees',name:'Наколенники MMA',desc:'Чёрные',price:210,color:'#272c36'},
+ {id:'knee_blue',cat:'knees',name:'Наколенники Pro',desc:'Синие',price:370,color:'#3978b8'},
+ {id:'knee_gold',cat:'knees',name:'Наколенники Gold',desc:'Золотистые',price:650,color:'#c99c3d'},
+ {id:'shoes_box',cat:'shoes',name:'Боксёрки Classic',desc:'Чёрные высокие',price:320,color:'#1b202e'},
+ {id:'shoes_white',cat:'shoes',name:'Боксёрки White',desc:'Светлые',price:450,color:'#e7e7df'},
+ {id:'shoes_red',cat:'shoes',name:'Боксёрки Fire',desc:'Красные',price:620,color:'#bd3346'},
+ {id:'belt_white',cat:'belts',name:'Белый пояс',desc:'Начальный уровень',price:90,color:'#f5f0e5'},
+ {id:'belt_blue',cat:'belts',name:'Синий пояс',desc:'Синий пояс формы',price:270,color:'#3669b2'},
+ {id:'belt_brown',cat:'belts',name:'Коричневый пояс',desc:'Коричневый пояс формы',price:390,color:'#79513a'},
+ {id:'belt_black',cat:'belts',name:'Чёрный пояс',desc:'Чёрный пояс формы',price:730,color:'#202028'},
+ {id:'chain_silver',cat:'jewelry',name:'Серебряная цепь',desc:'Украшение на шею',price:250,color:'#b9c3d4'},
+ {id:'chain_gold',cat:'jewelry',name:'Золотая цепь',desc:'Украшение на шею',price:720,color:'#e9c16b'},
+ {id:'medal_bronze',cat:'jewelry',name:'Медаль Бронза',desc:'Знак достижений',price:450,color:'#c78f5b'},
+ {id:'medal_gold',cat:'jewelry',name:'Медаль Чемпион',desc:'Золотая медаль',price:1100,color:'#f2cf65'}
+];
+function normalizeAccessories(){
+ if(!Array.isArray(s.ownedAccessories))s.ownedAccessories=[];
+ s.ownedAccessories=[...new Set(s.ownedAccessories)].filter(id=>accessories.some(a=>a.id===id));
+ if(!s.equippedAccessories || typeof s.equippedAccessories!=='object'||Array.isArray(s.equippedAccessories))s.equippedAccessories={};
+ for(const [slot,id] of Object.entries(s.equippedAccessories)){
+  const item=accessories.find(a=>a.id===id);
+  if(!item||accessoryCategories[item.cat]?.slot!==slot||!s.ownedAccessories.includes(id))delete s.equippedAccessories[slot];
+ }
+ if(!accessoryCategories[s.accessoryCategory])s.accessoryCategory='mouthguard';
+}
+function drawAccessoryLayer(svg,item){
+ const layer=svgNode('g',{'data-accessory-slot':accessoryCategories[item.cat].slot,'pointer-events':'none'}),c=item.color;
+ const path=(d,fill,stroke='#151c2d',w=2)=>layer.appendChild(svgNode('path',{d,fill,stroke,'stroke-width':w,'stroke-linejoin':'round','stroke-linecap':'round'}));
+ const line=(d,color,w=2)=>path(d,'none',color,w);
+ switch(item.cat){
+  case 'mouthguard':path('M112 101Q125 108 138 101L137 105Q125 113 113 105Z',c,'#242028',1);line('M116 104Q125 108 134 104','#ffffff77',1);break;
+  case 'wraps':path('M54 151L71 158L72 169L51 162ZM182 164L198 156L203 167L185 176Z',c);line('M54 157L71 164M185 171L201 162','#ffffff66',2);break;
+  case 'headgear':path('M78 49Q76 12 125 10Q173 12 172 49L158 71L154 56L166 44Q158 22 125 22Q92 22 85 44L96 56L93 75Z',c);path('M81 53L94 54L97 90L87 103L79 89ZM156 54L169 53L171 89L163 103L153 90Z',c);line('M90 97Q125 109 160 97',c,7);break;
+  case 'shin':path('M95 243L118 245L113 283L93 282Z',c);path('M133 245L155 243L160 282L139 283Z',c);line('M95 267L115 269M138 269L158 267','#ffffff66',2);break;
+  case 'knees':path('M91 229Q102 224 119 231L117 248Q102 253 91 246Z',c);path('M133 231Q149 224 160 229L160 246Q149 253 135 248Z',c);break;
+  case 'shoes':path('M94 277L110 285L110 300L59 300Q57 289 76 285Z',c);path('M146 277L136 285L136 300L190 300Q193 289 166 284Z',c);line('M68 294L106 294M143 294L183 294','#ffffff88',2);break;
+  case 'belts':path('M84 187Q123 200 165 187L165 200Q125 213 84 200Z',c);path('M122 200L118 222L127 225L131 199Z',c);line('M119 197L132 197','#ffffff88',2);break;
+  case 'jewelry':line('M109 117Q125 139 141 117',c,3);if(item.id.startsWith('medal')){path('M120 134L130 134L134 143L125 151L116 143Z',c);line('M125 137L125 147','#ffffff88',1)}else{path('M121 134L129 134L131 139L125 143L119 139Z',c)}break;
+ }
+ svg.appendChild(layer);
+}
+function drawAccessories(svg,overrides=null){
+ svg.querySelectorAll('[data-accessory-slot]').forEach(node=>node.remove());
+ const equipped=overrides||s.equippedAccessories;
+ for(const id of Object.values(equipped)){
+  const item=accessories.find(a=>a.id===id);if(item)drawAccessoryLayer(svg,item);
+ }
+}
+function accessoryArt(item){
+ const svg=$('fighter').cloneNode(true);svg.removeAttribute('id');svg.removeAttribute('class');
+ applyAppearance(svg);drawAccessories(svg,{[accessoryCategories[item.cat].slot]:item.id});return svg;
+}
+function renderAccessories(){
+ const root=$('accessory-tabs');root.replaceChildren();
+ for(const [catId,category] of Object.entries(accessoryCategories)){
+  const btn=document.createElement('button');btn.className='accessory-tab'+(s.accessoryCategory===catId?' active':'');btn.textContent=category.icon+' '+category.label;
+  btn.onclick=()=>{s.accessoryCategory=catId;save();renderAccessories();haptic()};root.appendChild(btn);
+ }
+ const summary=Object.values(s.equippedAccessories).map(id=>accessories.find(a=>a.id===id)?.name).filter(Boolean);
+ $('accessory-summary').textContent='Надето: '+(summary.length?summary.join(' · '):'ничего');
+ const grid=$('accessory-shop');grid.replaceChildren();
+ const cat=accessoryCategories[s.accessoryCategory];const wornId=s.equippedAccessories[cat.slot];
+ if(wornId){
+  const btn=document.createElement('button');btn.className='item-btn clear';btn.style.gridColumn='1 / -1';btn.textContent='Снять: '+accessories.find(a=>a.id===wornId).name;
+  btn.onclick=()=>{delete s.equippedAccessories[cat.slot];save();render();renderAccessories();haptic()};grid.appendChild(btn)
+ }
+ for(const item of accessories.filter(a=>a.cat===s.accessoryCategory)){
+  const owned=s.ownedAccessories.includes(item.id),equipped=wornId===item.id;
+  const card=document.createElement('div');card.className='item-card';
+  const art=document.createElement('div');art.className='item-art accessory-art';art.appendChild(accessoryArt(item));
+  const title=document.createElement('div');title.className='item-title';title.textContent=item.name;
+  const info=document.createElement('div');info.className='item-info';info.textContent=item.desc;
+  const btn=document.createElement('button');btn.className='item-btn'+(equipped?' equipped':owned?' owned':'');
+  btn.textContent=equipped?'✓ Надето':owned?'Надеть':'🪙 '+fmt(item.price);
+  btn.disabled=equipped||(!owned&&s.coins<item.price);
+  btn.onclick=()=>{
+   if(!s.ownedAccessories.includes(item.id)){
+    if(s.coins<item.price){notify('Недостаточно монет');return}
+    s.coins-=item.price;s.ownedAccessories.push(item.id);notify('Покупка: '+item.name)
+   }
+   s.equippedAccessories[cat.slot]=item.id;save();haptic();render();renderShop();renderAccessories();
+  };
+  card.append(art,title,info,btn);grid.appendChild(card);
+ }
+}
 function normalizeShop(){
  if(!Array.isArray(s.ownedFighters))s.ownedFighters=['starter'];
  if(!s.ownedFighters.includes('starter'))s.ownedFighters.unshift('starter');
@@ -145,7 +259,7 @@ function normalizeShop(){
  if(s.activeGear&&!s.ownedGear.includes(s.activeGear))s.activeGear='';
  if(!disciplines[s.shopCategory])s.shopCategory='muaythai';
 }
-normalizeShop();
+normalizeShop();normalizeAccessories();
 const svgNS='http://www.w3.org/2000/svg';
 function svgNode(tag,attributes){const el=document.createElementNS(svgNS,tag);for(const [k,v] of Object.entries(attributes))el.setAttribute(k,String(v));return el}
 function addOutfit(svg,gear){
@@ -217,7 +331,7 @@ function renderShop(){
     }else notify('Выбрано: '+item.name);
     if(kind==='fighter'){s.activeFighter=item.id;if(item.skin)s.skin=item.skin;if(item.hair)s.hair=item.hair}
     else s.activeGear=item.id;
-    save();haptic();render();renderShop();
+    save();haptic();render();renderShop();renderAccessories();
    };
    card.append(art,title,info,btn);root.appendChild(card);
   }
@@ -237,6 +351,7 @@ function applyAppearance(svg){if(!svg)return;
  const beard=svg.querySelector('#beard-shape');if(beard){const beardStyle=beardStyles[s.beard]||beardStyles.clean;if(beardStyle.d){beard.style.display='';beard.setAttribute('d',beardStyle.d);beard.setAttribute('fill',hairColor);beard.setAttribute('stroke',hairColor)}else beard.style.display='none';}
  const band=svg.querySelector('#headband');if(band)band.style.display=s.headbandOwned&&s.headbandOn?'':'none';
  decorateSVG(svg,s.activeGear);
+ drawAccessories(svg);
 }
 function renderAppearance(){applyAppearance($('fighter'));
  const clone=$('fighter').cloneNode(true);clone.removeAttribute('id');clone.classList.remove('punch');
@@ -271,9 +386,9 @@ function buy(type){const cost=type==='power'?powerCost():type==='auto'?autoCost(
 $('buypower').onclick=()=>buy('power');$('buyauto').onclick=()=>buy('auto');$('buystamina').onclick=()=>buy('stamina');
 $('fightbtn').onclick=()=>{if(s.energy<3){notify('Нужно 3 энергии');return}s.energy-=3;s.bossHp-=s.power;haptic();if(s.bossHp<=0){const prize=100*s.boss;earn(prize);s.wins++;s.boss++;s.bossHp=bossMax();notify('🏆 Победа! +'+fmt(prize)+' монет')}save();render()};
 $('dailybtn').onclick=()=>{const today=new Date().toLocaleDateString('en-CA');if(s.lastDaily===today)return;s.lastDaily=today;earn(250);notify('🎁 +250 монет!');save();render()};
-document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.nav button').forEach(t=>t.classList.toggle('active',t===b));document.querySelectorAll('.section').forEach(t=>t.classList.toggle('active',t.id==='screen-'+b.dataset.tab));render();if(b.dataset.tab==='locker')renderShop()});
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.nav button').forEach(t=>t.classList.toggle('active',t===b));document.querySelectorAll('.section').forEach(t=>t.classList.toggle('active',t.id==='screen-'+b.dataset.tab));render();if(b.dataset.tab==='locker'){renderShop();renderAccessories()}});
 // Restore limited passive earnings/energy after reopening; keep a max of 8 hours away.
-const elapsed=Math.min(28800,Math.max(0,Math.floor((Date.now()-s.lastTick)/1000)));if(elapsed>0){s.energy=Math.min(maxEnergy(),s.energy+elapsed);if(s.auto>0)earn(s.auto*elapsed)}s.lastTick=Date.now();render();renderShop();save();
+const elapsed=Math.min(28800,Math.max(0,Math.floor((Date.now()-s.lastTick)/1000)));if(elapsed>0){s.energy=Math.min(maxEnergy(),s.energy+elapsed);if(s.auto>0)earn(s.auto*elapsed)}s.lastTick=Date.now();render();renderShop();renderAccessories();save();
 setInterval(()=>{s.energy=Math.min(maxEnergy(),s.energy+1);if(s.auto>0)earn(s.auto);s.lastTick=Date.now();render();if($('screen-locker').classList.contains('active'))renderShop();save()},1000);
 })();
 </script>
