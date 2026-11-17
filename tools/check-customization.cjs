@@ -1,6 +1,7 @@
 const assert=require('node:assert/strict');
 const {createHash}=require('node:crypto');
 const {chromium}=require('playwright');
+const profiles=require('./body-types.json');
 const base=process.env.GAME_URL||'http://127.0.0.1:8081/';
 let browser;
 (async()=>{
@@ -54,21 +55,31 @@ let browser;
  saved=await state();assert.equal(saved.equippedTattoos.back,'dragon_back');assert.equal(saved.previewBack,true);assert.equal(saved.coins,8350);
  await page.locator('#preview-front').click();
  const renders=[];
- for(const label of ['Атлетичный','Накачанный','Сухой','Широкий','Тяжеловес']){
+ const bodies={athletic:'Атлетичный',muscular:'Накачанный',lean:'Сухой',wide:'Широкий',heavyweight:'Тяжеловес',...Object.fromEntries(Object.entries(profiles).map(([id,p])=>[id,p.label]))};
+ assert.equal(await page.locator('#bodyType-options button').count(),15);
+ for(const [id,label]of Object.entries(bodies)){
   await page.locator('#bodyType-options button').filter({hasText:label}).click();
   for(const view of ['front','back']){
-   await page.locator('#preview-'+view).click();await page.waitForTimeout(160);
+   await page.locator('#preview-'+view).click();
+   await page.evaluate(async({id,view})=>{
+    const files=['top-blue.png','bottom-green.png','gloves-red.png?v=72','feet-gold.png'];
+    const urls=files.map(file=>`assets/equipment/${id}/${view}/${file}`);
+    if(window.FIGHT_CLUB_BODY_CATALOG[id])urls.push(FIGHT_CLUB_BODY_CATALOG[id][view].src);
+    await Promise.all(urls.map(async src=>{const image=new Image();image.src=src;await image.decode()}));
+    await new Promise(requestAnimationFrame);await new Promise(requestAnimationFrame);
+   },{id,view});
    const render=await page.locator('canvas.pixel-preview').evaluate(cv=>{const d=cv.getContext('2d').getImageData(0,0,192,420).data;let n=0;for(let i=3;i<d.length;i+=4)if(d[i])n++;return {pixels:n,data:cv.toDataURL()}});
-   assert.ok(render.pixels>12000,label+' '+view);renders.push(render.data);
+   assert.ok(render.pixels>5000,label+' '+view);renders.push(render.data);
   }
  }
- assert.equal(new Set(renders).size,10,'Each body/view needs its own rendered sprite');
+ assert.equal(new Set(renders).size,30,'Each body/view needs its own rendered sprite');
  await page.reload({waitUntil:'networkidle'});saved=await state();assert.equal(saved.equippedEquipment.top,'top_v7_blue');assert.equal(saved.equippedAccessories.feet,'shoes_v7_gold');assert.equal(saved.equippedTattoos.back,'dragon_back');assert.equal(saved.hits,123);assert.equal(saved.power,3);
+ assert.equal(saved.bodyType,'worn','The last new body selection must survive a reload');
  await page.locator('.nav button[data-tab="locker"]').click();await page.locator('#preview-front').click();await page.locator('#equipment-tabs button').filter({hasText:'Верх'}).click();await buy('#equipment-shop','Без верха');
  assert.equal((await state()).equippedEquipment.top,'top_none');
  await page.locator('#tattoo-tabs button').filter({hasText:'Грудь'}).click();await buy('#tattoo-shop','Тигр');
  await page.locator('#locker-preview').scrollIntoViewIfNeeded();await page.screenshot({path:'/tmp/fight-club-mobile-v7.png'});
  assert.deepEqual(errors,[]);assert.deepEqual(missing,[]);
- console.log('PASS: complete arm contours, transparent margins, purchases, exact prices, wraps under gloves, legacy progress, all 10 body/views, persistence, shirt removal, tattoos, no JS errors or missing assets.');
+ console.log('PASS: complete arm contours, transparent margins, purchases, exact prices, wraps under gloves, legacy progress, all 30 body/views, persistence, shirt removal, tattoos, no JS errors or missing assets.');
  await browser.close();
 })().catch(e=>{console.error(e);process.exitCode=1}).finally(async()=>{if(browser)await browser.close()});

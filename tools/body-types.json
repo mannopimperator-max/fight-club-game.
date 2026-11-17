@@ -1,0 +1,52 @@
+{
+  "skinny": {
+    "label": "Тощий",
+    "source": "skinny-pair.png",
+    "gearSource": "lean"
+  },
+  "wiry": {
+    "label": "Жилистый",
+    "source": "wiry-pair.png",
+    "gearSource": "lean"
+  },
+  "average": {
+    "label": "Обычный парень",
+    "source": "average-pair.png",
+    "gearSource": "athletic"
+  },
+  "scrawny": {
+    "label": "Дрыщ",
+    "source": "scrawny-pair.png",
+    "gearSource": "lean"
+  },
+  "chubby": {
+    "label": "Пухлый",
+    "source": "chubby-pair.png",
+    "gearSource": "heavyweight"
+  },
+  "stocky": {
+    "label": "Коренастый",
+    "source": "stocky-pair.png",
+    "gearSource": "heavyweight"
+  },
+  "grizzled": {
+    "label": "Ветеран",
+    "source": "grizzled-pair.png",
+    "gearSource": "lean"
+  },
+  "lanky": {
+    "label": "Долговязый",
+    "source": "lanky-pair.png",
+    "gearSource": "lean"
+  },
+  "teen": {
+    "label": "Юниор · 19 лет",
+    "source": "teen-pair.png",
+    "gearSource": "lean"
+  },
+  "worn": {
+    "label": "Измотанный",
+    "source": "worn-pair.png",
+    "gearSource": "lean"
+  }
+}

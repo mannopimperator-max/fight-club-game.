@@ -6,6 +6,12 @@ const {chromium} = require('playwright');
 const root = path.resolve(__dirname, '..');
 const layout = require('./gear-layout.json');
 const gloveFit = require('./glove-fit.json');
+const bodyProfiles=require('./body-types.json');
+const bodyRigs=require('./body-rig.json');
+for(const [body,views]of Object.entries(bodyRigs)){
+  layout[body]=views;
+  gloveFit[body]=Object.fromEntries(Object.entries(views).map(([view,rig])=>[view,rig.gloves]));
+}
 const colors = {
   black:{label:'Графит',hex:'#302d37'}, red:{label:'Красный',hex:'#ba3548'},
   blue:{label:'Синий',hex:'#376bc1'}, green:{label:'Изумрудный',hex:'#2c8668'},
@@ -19,9 +25,17 @@ const slots = ['bottom','top','hands','gloves','waist','feet'];
   await page.goto('about:blank');
   let count=0;
   for(const [body,views] of Object.entries(layout)) for(const [view,fit] of Object.entries(views)) {
-    const src='data:image/png;base64,'+fs.readFileSync(path.join(__dirname,'equipment-source',`${body}_${view}_gear.png`)).toString('base64');
-    const textures=await page.evaluate(async({src,fit,colors,slots,gloveFit})=>{
+    const sourceBody=bodyProfiles[body]?.gearSource||body;
+    const src='data:image/png;base64,'+fs.readFileSync(path.join(__dirname,'equipment-source',`${sourceBody}_${view}_gear.png`)).toString('base64');
+    const bodySrc=bodyProfiles[body]?'data:image/png;base64,'+fs.readFileSync(path.join(root,'assets/bodies',`${body}-${view}-v8.png`)).toString('base64'):null;
+    const textures=await page.evaluate(async({src,bodySrc,fit,colors,slots,gloveFit})=>{
       const img=new Image();img.src=src;await img.decode();
+      let bodyImage,bodyPixels;
+      if(bodySrc){
+        bodyImage=new Image();bodyImage.src=bodySrc;await bodyImage.decode();
+        const base=document.createElement('canvas');base.width=192;base.height=420;
+        const bc=base.getContext('2d');bc.drawImage(bodyImage,0,0);bodyPixels=bc.getImageData(0,0,192,420).data;
+      }
       const out={};
       const bounds=(data,x0,x1,y0,y1)=>{
         let l=x1,t=y1,r=x0,b=y0;
@@ -31,6 +45,14 @@ const slots = ['bottom','top','hands','gloves','waist','feet'];
       for(let i=0;i<slots.length;i++){
         const slot=slots[i],raw=document.createElement('canvas');raw.width=192;raw.height=420;
         const r=raw.getContext('2d',{willReadFrequently:true});r.drawImage(img,0,i*420,192,420,0,0,192,420);
+        if(slot==='bottom'&&fit.bottomFromBody){
+          r.clearRect(0,0,192,420);r.drawImage(bodyImage,0,0);
+          const masked=r.getImageData(0,0,192,420),p=masked.data,[l,t,w,h]=fit.bottom;
+          for(let y=0;y<420;y++)for(let x=0;x<192;x++){
+            const i=(y*192+x)*4,red=p[i],g=p[i+1],b=p[i+2],hi=Math.max(red,g,b),lo=Math.min(red,g,b);
+            if(x<l||x>=l+w||y<t||y>=t+h||hi-lo>=60||!(hi<155||lo>128))p[i+3]=0;
+          }r.putImageData(masked,0,0);
+        }
         const original=r.getImageData(0,0,192,420),parts=['hands','gloves','feet'].includes(slot)?[bounds(original.data,0,96,0,420),bounds(original.data,96,192,0,420)]:[bounds(original.data,0,192,0,420)];
         for(const [key,color] of Object.entries(colors)){
           const rgba=new ImageData(new Uint8ClampedArray(original.data),192,420),p=rgba.data;
@@ -69,16 +91,32 @@ const slots = ['bottom','top','hands','gloves','waist','feet'];
               c.drawImage(raw,...part,-pivot[0]*w,-pivot[1]*h,w,h);
               c.restore();
             });
+          }else if(slot==='bottom'&&fit.bottomFromBody)c.drawImage(raw,0,0);
+          else if(slot==='top'&&fit.topFollowsBody){
+            const [sx,sy,sw,sh]=parts[0],[l,t,w,h]=fit.top,cx=fit.anchors.cx;
+            for(let row=0;row<h;row++){
+              const y=t+row,sourceY=sy+Math.min(sh-1,Math.floor(row/h*sh));
+              let sl=sx,sr=sx+sw;
+              while(sl<sr&&original.data[(sourceY*192+sl)*4+3]<16)sl++;
+              while(sr>sl&&original.data[(sourceY*192+sr-1)*4+3]<16)sr--;
+              if(sl===sr)continue;
+              let dl=cx,dr=cx;
+              while(dl>0&&bodyPixels[(y*192+dl-1)*4+3]>128)dl--;
+              while(dr<191&&bodyPixels[(y*192+dr+1)*4+3]>128)dr++;
+              dl=Math.max(dl,l);dr=Math.min(dr+1,l+w);
+              if(dr>dl)c.drawImage(raw,sl,sourceY,sr-sl,1,dl,y,dr-dl,1);
+            }
+            c.globalCompositeOperation='destination-in';c.drawImage(bodyImage,0,0);c.globalCompositeOperation='source-over';
           }else parts.forEach((part,n)=>c.drawImage(raw,...part,...dest[n]));
           out[`${slot}-${key}.png`]=cv.toDataURL('image/png').split(',')[1];
         }
       }
       return out;
-    },{src,fit,colors,slots,gloveFit:gloveFit[body][view]});
+    },{src,bodySrc,fit,colors,slots,gloveFit:gloveFit[body][view]});
     const dest=path.join(root,'assets/equipment',body,view);fs.mkdirSync(dest,{recursive:true});
     for(const [name,data]of Object.entries(textures)){fs.writeFileSync(path.join(dest,name),Buffer.from(data,'base64'));count++}
   }
-  fs.writeFileSync(path.join(root,'assets/equipment/manifest.json'),JSON.stringify({version:'7.2',width:192,height:420,colors,bodies:Object.keys(layout),views:['front','back'],slots,gloveFit,file:'{body}/{view}/{slot}-{color}.png'},null,2)+'\n');
+  fs.writeFileSync(path.join(root,'assets/equipment/manifest.json'),JSON.stringify({version:'8.0',width:192,height:420,colors,bodies:Object.keys(layout),views:['front','back'],slots,gloveFit,file:'{body}/{view}/{slot}-{color}.png'},null,2)+'\n');
   const flash='data:image/png;base64,'+fs.readFileSync(path.join(root,'assets/tattoos/flash.png')).toString('base64');
   const motifs=['tribal','dragon','geo','snake','warrior','eagle','rune','tiger','skull'];
   const decals=await page.evaluate(async({flash,motifs})=>{
