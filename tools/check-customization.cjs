@@ -7,6 +7,26 @@ const base=process.env.GAME_URL||'http://127.0.0.1:8081/';
  const errors=[],missing=[];page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.url().includes('/assets/')&&r.status()>=400)missing.push(r.url())});
  await page.route('**/telegram.org/**',r=>r.abort());
  await page.goto(base,{waitUntil:'networkidle'});
+ const silhouettes=await page.evaluate(async()=>{
+  const results=[];
+  for(const body of ['wide','heavyweight']){
+   const image=new Image();image.src=`assets/bodies/${body}-front-v71.png`;await image.decode();
+   const cv=document.createElement('canvas');cv.width=image.width;cv.height=image.height;
+   const c=cv.getContext('2d');c.drawImage(image,0,0);const data=c.getImageData(0,0,cv.width,cv.height).data;
+   let last=null,run=0,longest=0,left=cv.width,right=0;
+   for(let y=0;y<cv.height;y++)for(let x=0;x<cv.width;x++)if(data[(y*cv.width+x)*4+3]>128){left=Math.min(left,x);right=Math.max(right,x)}
+   for(let y=90;y<226;y++){
+    let edge=null;for(let x=0;x<60;x++)if(data[(y*cv.width+x)*4+3]>128){edge=x;break}
+    run=edge===last?run+1:1;longest=Math.max(longest,run);last=edge;
+   }
+   results.push({body,width:cv.width,height:cv.height,left,right,longest});
+  }return results;
+ });
+ for(const result of silhouettes){
+  assert.equal(result.width,192);assert.equal(result.height,420);
+  assert.ok(result.left>0&&result.right<191,'The full silhouette needs transparent margins: '+result.body);
+  assert.ok(result.longest<=20,'The arm contour must not have a flat cropped side: '+result.body);
+ }
  await page.evaluate(()=>localStorage.setItem('fightclub_demo_v1',JSON.stringify({coins:10000,hits:123,total:4567,power:3,bodyType:'athletic',ownedEquipment:['top_box_red'],equippedEquipment:{top:'top_box_red'},ownedTattoos:['dragon_left'],equippedTattoos:{leftArm:'dragon_left'}})));
  await page.reload({waitUntil:'networkidle'});
  const state=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('fightclub_demo_v1')));
@@ -37,6 +57,6 @@ const base=process.env.GAME_URL||'http://127.0.0.1:8081/';
  await page.locator('#tattoo-tabs button').filter({hasText:'Грудь'}).click();await buy('#tattoo-shop','Тигр');
  await page.locator('#locker-preview').scrollIntoViewIfNeeded();await page.screenshot({path:'/tmp/fight-club-mobile-v7.png'});
  assert.deepEqual(errors,[]);assert.deepEqual(missing,[]);
- console.log('PASS: purchases, exact prices, legacy progress, all 10 body/views, persistence, shirt removal, tattoos, no JS errors or missing assets.');
+ console.log('PASS: complete arm contours, transparent margins, purchases, exact prices, legacy progress, all 10 body/views, persistence, shirt removal, tattoos, no JS errors or missing assets.');
  await browser.close();
 })().catch(e=>{console.error(e);process.exitCode=1});
