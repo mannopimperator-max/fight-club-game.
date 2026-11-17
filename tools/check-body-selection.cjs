@@ -8,9 +8,15 @@ let browser;
  browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',headless:true,args:['--no-sandbox']});
  const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
  const errors=[],missing=[];page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.url().includes('/assets/')&&r.status()>=400)missing.push(r.url())});
- await page.route('**/telegram.org/**',r=>r.abort());await page.goto(base,{waitUntil:'networkidle'});
- await page.evaluate(()=>localStorage.setItem('fightclub_demo_v1',JSON.stringify({coins:21398,total:45000,hits:451,power:21,auto:10,skin:'medium',hairColor:'black',bodyType:'athletic'})));
- await page.reload({waitUntil:'networkidle'});await page.locator('.nav button[data-tab="locker"]').click();
+ await page.route('**/telegram.org/**',r=>r.abort());
+ // Seed before the app starts. An already running page's autosave can overwrite
+ // a fixture while a slow production reload is still waiting for its response.
+ await page.addInitScript(()=>{
+  if(sessionStorage.getItem('qa-body-fixture'))return;
+  localStorage.setItem('fightclub_demo_v1',JSON.stringify({coins:21398,total:45000,hits:451,power:21,auto:10,skin:'medium',hairColor:'black',bodyType:'athletic'}));
+  sessionStorage.setItem('qa-body-fixture','1');
+ });
+ await page.goto(base,{waitUntil:'networkidle'});await page.locator('.nav button[data-tab="locker"]').click();
  assert.equal(await page.locator('#bodyType-options button').count(),15);
  const unique=new Set();
  for(const [id,p]of Object.entries(profiles)){

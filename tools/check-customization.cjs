@@ -9,6 +9,11 @@ let browser;
  const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
  const errors=[],missing=[];page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.url().includes('/assets/')&&r.status()>=400)missing.push(r.url())});
  await page.route('**/telegram.org/**',r=>r.abort());
+ await page.addInitScript(()=>{
+  if(sessionStorage.getItem('qa-customization-fixture'))return;
+  localStorage.setItem('fightclub_demo_v1',JSON.stringify({coins:10000,hits:123,total:4567,power:3,bodyType:'athletic',ownedEquipment:['top_box_red'],equippedEquipment:{top:'top_box_red'},ownedTattoos:['dragon_left'],equippedTattoos:{leftArm:'dragon_left'}}));
+  sessionStorage.setItem('qa-customization-fixture','1');
+ });
  await page.goto(base,{waitUntil:'networkidle'});
  const silhouettes=await page.evaluate(async()=>{
   const results=[];
@@ -30,8 +35,6 @@ let browser;
   assert.ok(result.left>0&&result.right<191,'The full silhouette needs transparent margins: '+result.body);
   assert.ok(result.longest<=20,'The arm contour must not have a flat cropped side: '+result.body);
  }
- await page.evaluate(()=>localStorage.setItem('fightclub_demo_v1',JSON.stringify({coins:10000,hits:123,total:4567,power:3,bodyType:'athletic',ownedEquipment:['top_box_red'],equippedEquipment:{top:'top_box_red'},ownedTattoos:['dragon_left'],equippedTattoos:{leftArm:'dragon_left'}})));
- await page.reload({waitUntil:'networkidle'});
  const state=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('fightclub_demo_v1')));
  assert.equal((await state()).hits,123);assert.equal((await state()).power,3);
  await page.locator('.nav button[data-tab="locker"]').click();
