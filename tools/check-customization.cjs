@@ -1,8 +1,10 @@
 const assert=require('node:assert/strict');
+const {createHash}=require('node:crypto');
 const {chromium}=require('playwright');
 const base=process.env.GAME_URL||'http://127.0.0.1:8081/';
+let browser;
 (async()=>{
- const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',headless:true,args:['--no-sandbox']});
+ browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',headless:true,args:['--no-sandbox']});
  const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
  const errors=[],missing=[];page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.url().includes('/assets/')&&r.status()>=400)missing.push(r.url())});
  await page.route('**/telegram.org/**',r=>r.abort());
@@ -37,11 +39,16 @@ const base=process.env.GAME_URL||'http://127.0.0.1:8081/';
  let saved=await state();assert.equal(saved.equippedEquipment.top,'top_v7_blue');assert.equal(saved.coins,9820);assert.ok(saved.ownedEquipment.includes('top_box_red'));
  await page.locator('#equipment-tabs button').filter({hasText:'Низ'}).click();await buy('#equipment-shop','Шорты · Изумрудный');
  await page.locator('#equipment-tabs button').filter({hasText:'Перчатки'}).click();await buy('#equipment-shop','Перчатки · Красный');
- await page.waitForLoadState('networkidle');
- const gloveBeforeWrap=await page.locator('#pixel-fighter').evaluate(cv=>cv.toDataURL());
+ // Wait for actual textures and their scheduled repaint, including on a cold CDN.
+ await page.evaluate(async()=>{
+  await Promise.all(['top-blue.png','bottom-green.png','gloves-red.png?v=72'].map(async name=>{const image=new Image();image.src='assets/equipment/athletic/front/'+name;await image.decode()}));
+  await new Promise(requestAnimationFrame);await new Promise(requestAnimationFrame);
+ });
+ const gloveHash=async()=>createHash('sha256').update(await page.locator('#pixel-fighter').evaluate(cv=>cv.toDataURL())).digest('hex');
+ const gloveBeforeWrap=await gloveHash();
  await page.locator('#accessory-tabs button').filter({hasText:'Бинты'}).click();await buy('#accessory-shop','Пиксельные бинты — базовые');
  await page.waitForLoadState('networkidle');
- assert.equal(await page.locator('#pixel-fighter').evaluate(cv=>cv.toDataURL()),gloveBeforeWrap,'Wraps and their finger pixels must stay inside boxing gloves');
+ assert.equal(await gloveHash(),gloveBeforeWrap,'Wraps and their finger pixels must stay inside boxing gloves');
  await page.locator('#accessory-tabs button').filter({hasText:'Обувь'}).click();await buy('#accessory-shop','Боксёрки · Золотой');
  await page.locator('#tattoo-tabs button').filter({hasText:'Спина'}).click();await buy('#tattoo-shop','Дракон на спине');
  saved=await state();assert.equal(saved.equippedTattoos.back,'dragon_back');assert.equal(saved.previewBack,true);assert.equal(saved.coins,8350);
@@ -64,4 +71,4 @@ const base=process.env.GAME_URL||'http://127.0.0.1:8081/';
  assert.deepEqual(errors,[]);assert.deepEqual(missing,[]);
  console.log('PASS: complete arm contours, transparent margins, purchases, exact prices, wraps under gloves, legacy progress, all 10 body/views, persistence, shirt removal, tattoos, no JS errors or missing assets.');
  await browser.close();
-})().catch(e=>{console.error(e);process.exitCode=1});
+})().catch(e=>{console.error(e);process.exitCode=1}).finally(async()=>{if(browser)await browser.close()});
