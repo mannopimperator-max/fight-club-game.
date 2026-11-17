@@ -1,0 +1,59 @@
+{
+  "version": 7,
+  "width": 192,
+  "height": 420,
+  "colors": {
+    "black": {
+      "label": "Графит",
+      "hex": "#302d37"
+    },
+    "red": {
+      "label": "Красный",
+      "hex": "#ba3548"
+    },
+    "blue": {
+      "label": "Синий",
+      "hex": "#376bc1"
+    },
+    "green": {
+      "label": "Изумрудный",
+      "hex": "#2c8668"
+    },
+    "white": {
+      "label": "Белый",
+      "hex": "#e4dfd5"
+    },
+    "gold": {
+      "label": "Золотой",
+      "hex": "#c99a3e"
+    },
+    "purple": {
+      "label": "Фиолетовый",
+      "hex": "#8252ad"
+    },
+    "orange": {
+      "label": "Оранжевый",
+      "hex": "#d97732"
+    }
+  },
+  "bodies": [
+    "athletic",
+    "muscular",
+    "lean",
+    "wide",
+    "heavyweight"
+  ],
+  "views": [
+    "front",
+    "back"
+  ],
+  "slots": [
+    "bottom",
+    "top",
+    "hands",
+    "gloves",
+    "waist",
+    "feet"
+  ],
+  "file": "{body}/{view}/{slot}-{color}.png"
+}
