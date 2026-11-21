@@ -1,0 +1,48 @@
+.club-wallet-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:14px}
+.club-open-tasks,.club-popularity-wallet{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:9px 12px;border:1px solid #45405e;border-radius:12px;background:#211f34;color:#f5eafa;font-size:14px;font-weight:700;text-decoration:none}
+.club-popularity-wallet{color:#d8b7ff;font-variant-numeric:tabular-nums}
+.club-popularity-wallet small{font-size:12px;color:#c3bad5;font-weight:500}
+.club-open-tasks{background:#22283b;color:var(--gold)}
+.club-identity{display:inline-block;margin-top:6px;font-size:12px;color:#e3c6ff}
+.club-identity[hidden]{display:none}
+.club-title-row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:20px}
+.club-title-row .section-title{margin:0}
+.club-back{min-height:44px;padding:9px 12px}
+.club-intro{font-size:14px;line-height:1.5;color:var(--muted)}
+.club-daily{padding:14px;margin-top:15px;border-radius:16px;background:var(--panel);border:1px solid #30364a}
+.club-daily-label{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:14px;margin-bottom:12px}
+.club-daily-label span{color:#d8b7ff;font-size:13px}
+.club-streak-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.club-day{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:56px;border-radius:10px;background:#242a3c;color:#b4bdd2;font-size:12px}
+.club-day b{font-size:16px;color:#f9f9ff}
+.club-day.done{background:#233b34;color:#90dfbd}
+.club-day.current{box-shadow:inset 0 0 0 2px var(--gold)}
+.club-task-filters{display:grid;grid-template-columns:minmax(0,.6fr) minmax(0,1.4fr) minmax(0,.8fr) minmax(0,1.5fr);gap:5px;margin:15px 0}
+.club-task-filters button{min-width:0;min-height:44px;padding:9px 3px;font-size:13px;border:1px solid #3e465e;border-radius:10px;background:#1c2232;color:var(--muted)}
+.club-task-filters button.selected{background:#34304a;color:#ffe1a0;border-color:#9d7c43}
+.club-task-list{display:grid;gap:12px}
+.club-card{border:1px solid #343b50;border-radius:18px;background:var(--panel);padding:16px}
+.club-card.featured{border-color:#806439;background:linear-gradient(130deg,#282335,#171c2b)}
+.club-feature{font-size:12px;letter-spacing:.08em;color:var(--gold);text-transform:uppercase;margin-bottom:12px}
+.club-card-head{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:10px;align-items:start}
+.club-card-head h3,.club-cosmetic h3{margin:0;font-size:16px;line-height:1.4;overflow-wrap:anywhere}
+.club-card-head p,.club-cosmetic p{margin:5px 0 0;font-size:13px;line-height:1.5;color:var(--muted);overflow-wrap:anywhere}
+.club-task-icon{font-size:23px;line-height:36px;text-align:center;border-radius:10px;background:#292e43}
+.club-rewards{display:grid;gap:6px;justify-items:end;white-space:nowrap;font-size:14px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--gold)}
+.club-popularity{color:#d8b7ff}
+.club-description{font-size:14px;line-height:1.55;color:#c2c8d9;margin:13px 0 0}
+.club-card-actions{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:14px}
+.club-card-actions>span{color:var(--muted);font-size:13px}
+.club-card-actions button,.club-card-actions a{min-height:44px;font-size:14px;text-decoration:none;text-align:center;white-space:normal}
+.club-footnote{font-size:12px;line-height:1.6;color:var(--muted);margin:12px 0 0}
+.club-task-progress{height:6px;border-radius:6px;background:#30364a;margin-top:16px;overflow:hidden}
+.club-task-progress span{display:block;height:100%;background:#bf98ef}
+.club-market{margin-top:24px}
+.club-market h2{font-size:19px;margin:0 0 7px}
+.club-market>p{font-size:14px;line-height:1.55;color:var(--muted)}
+.club-cosmetics{display:grid;gap:10px;margin:14px 0}
+.club-cosmetic{display:flex;align-items:center;justify-content:space-between;gap:14px;border:1px solid #3e3852;border-radius:14px;background:#211f32;padding:14px}
+.club-cosmetic>div{min-width:0}
+.club-cosmetic button{min-height:44px;flex-shrink:0;font-size:14px}
+.club-status{font-size:14px;line-height:1.5;color:var(--green)}
+@media(max-width:360px){.club-wallet-row{gap:8px}.club-popularity-wallet,.club-open-tasks{padding:9px 10px;font-size:13px}.club-card{padding:12px}.club-card-head{grid-template-columns:30px minmax(0,1fr) auto;gap:8px}.club-task-icon{font-size:20px}.club-task-filters{gap:4px}.club-task-filters button{font-size:12px}.club-card-head h3{font-size:15px}.club-cosmetic{padding:12px;gap:10px}.club-cosmetic h3{font-size:15px}}
